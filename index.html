@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html> 
+    <head> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quote of the day</title>
+<link rel = "stylesheet" href="style.css">
+    </head>
+<body> 
+<div class = "quote-box"> 
+    <h2>Quote of the day</h2>
+    <blockquote id="quote">Loading...</blockquote>
+    <span id="author">Loading...</span>
+    <div> 
+        <button onclick="getquote(api_url)">New Quote</button>
+        <button onclick="tweet()"><img src="lasttwitter.webp">Tweet</button>
+    </div>
+</div>
+<script> 
+const quote = document.getElementById("quote")
+const author = document.getElementById("author")
+
+    const api_url = "https://api.api-ninjas.com/v1/quotes";
+    const api_key = "rZqPvrCZb1eb0Xe6O54Oug==dfwHvoWOl2Kqy1lD";
+
+    async function getquote(url) { //fetching data from API
+            const response = await fetch(url, {
+                headers: {
+                    'X-Api-Key': api_key // Including the API key in the request headers
+                }
+            });
+
+            if (response.ok) { //if response is good
+                const data = await response.json(); //json is javascript object notation
+                console.log(data); //put data into website console
+                document.querySelector('blockquote').textContent = data[0].quote; //display quote text in blockquote
+                document.querySelector('span').textContent = `- ${data[0].author}`; //displaying quote author in span 
+            } else {
+                console.error('Error:', response.status); //or else get console to give back an error
+                quote.innerHTML = data.content; 
+                author.innerHTML = data.author;
+            }
+        }
+
+    getquote(api_url);
+
+    function tweet(){ 
+        window.open("https://twitter.com/intent/tweet?text=" + quote.innerHTML + " " + author.innerHTML, "Tweet Window", "width=600, height=300");
+    }
+</script>
+
+</body>
+</html>
